@@ -18,8 +18,10 @@ import { useRouter } from "next/navigation";
 
 const LoginModal = () => {
     const router = useRouter()
+
     const registerModal = useRegisterModal()
-    const LoginModal = useLoginModal()
+    const loginModal = useLoginModal()
+
     const [isLoading, setIsLoading] = useState(false)
 
 
@@ -31,7 +33,7 @@ const LoginModal = () => {
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            name: '',
+            email: '',
             password: ''
         }
     });
@@ -47,7 +49,7 @@ const LoginModal = () => {
             if (callback?.ok){
                 toast.success('Logged in successfully')
                 router.refresh();
-                LoginModal.onClose();
+                loginModal.onClose();
 
             }
 
@@ -56,6 +58,11 @@ const LoginModal = () => {
             }
         })
     }
+
+    const toggle = useCallback(() => {
+        loginModal.onClose();
+        registerModal.onOpen();
+    }, [loginModal, registerModal])
 
     const bodyContent = (
         <div className=" flex flex-col gap-4 ">
@@ -95,7 +102,7 @@ const LoginModal = () => {
             outline
             label="Continue with GitHub"
             icon={AiFillGithub}
-            onClick={() => signIn()}
+            onClick={() => signIn('github')}
             />
             <div className="
             text-neutral-500
@@ -112,16 +119,16 @@ const LoginModal = () => {
                 gap-2
                 ">
                     <div>
-                        Already have an account?
+                        First time using Airbnb?
                     </div>
                     <div
-                    onClick={registerModal.onClose}
+                    onClick={toggle}
                     className="
                     text-neutral-800
                     cursor-pointer
                     hover:underline
                     ">
-                        Login
+                        Create an account
                     </div>
                 </div>
             </div>
@@ -130,10 +137,10 @@ const LoginModal = () => {
     return (
         <Modal 
         disabled={isLoading}
-        isOpen={LoginModal.isOpen}
+        isOpen={loginModal.isOpen}
         title="Login"
         actionLabel="Continue"
-        onClose={LoginModal.onClose}
+        onClose={loginModal.onClose}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}
         footer={FooterContent}
