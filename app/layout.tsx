@@ -13,7 +13,7 @@ import RentModal from './components/modals/RentModal'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Air Bnb',
+  title: 'Airbnb-clone',
   description: 'Airbnb Clone',
 }
 
